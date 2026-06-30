@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       backup_date:
-        description: "YYYYMMDD to verify (blank = yesterday)"
+        description: "YYYYMMDD to verify (blank = today)"
         required: false
 
 jobs:
@@ -26,6 +26,6 @@ jobs:
           WEBDAV_PASS: ${{ secrets.WEBDAV_PASS }}
           MEMOS_LIVE_URL: ${{ secrets.MEMOS_LIVE_URL }}
           MEMOS_TOKEN: ${{ secrets.MEMOS_TOKEN }}
-          # Pin a date when run manually; empty on schedule -> script uses yesterday.
+          # Pin a date when run manually; empty on schedule -> script uses today.
           BACKUP_DATE: ${{ github.event.inputs.backup_date }}
         run: bash verify-restore.sh

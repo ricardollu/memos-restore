@@ -4,7 +4,7 @@
 # comparing its latest non-pinned memo against the live instance.
 #
 # Flow (drift-proof, by-name):
-#   1. rclone-download memos_prod_<date>.db from WebDAV  (default date: yesterday)
+#   1. rclone-download memos_prod_<date>.db from WebDAV  (default date: today)
 #   2. boot a disposable `neosmemo/memos` container on that DB
 #   3. anchor = newest non-pinned memo IN THE BACKUP
 #        GET /api/v1/memos?pageSize=1&filter=pinned==false  on RESTORED
@@ -22,7 +22,7 @@
 #   WEBDAV_URL  WEBDAV_USER  WEBDAV_PASS  MEMOS_LIVE_URL  MEMOS_TOKEN
 # Optional env:
 #   BACKUP_DIR (default: memos)  BACKUP_TZ (default: Asia/Hong_Kong)
-#   BACKUP_DATE (default: yesterday)  MEMOS_IMAGE (default: neosmemo/memos:0.29.1)
+#   BACKUP_DATE (default: today)  MEMOS_IMAGE (default: neosmemo/memos:stable)
 #   VERIFY_PORT (default: 15230)
 #
 # NOTE: MEMOS_TOKEN must already exist *inside the backup being verified* — the
@@ -39,7 +39,7 @@ set -euo pipefail
 
 BACKUP_DIR="${BACKUP_DIR:-memos}"
 BACKUP_TZ="${BACKUP_TZ:-Asia/Hong_Kong}"
-BACKUP_DATE="${BACKUP_DATE:-$(TZ="$BACKUP_TZ" date -d "yesterday" +%Y%m%d)}"
+BACKUP_DATE="${BACKUP_DATE:-$(TZ="$BACKUP_TZ" date +%Y%m%d)}"
 MEMOS_IMAGE="${MEMOS_IMAGE:-neosmemo/memos:stable}"
 VERIFY_PORT="${VERIFY_PORT:-15230}"
 
