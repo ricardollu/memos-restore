@@ -1,0 +1,11 @@
+# secrets — never commit
+.envrc
+
+# direnv cache
+.direnv/
+
+# memos runtime data
+/data/
+*.db
+*.db-wal
+*.db-shm

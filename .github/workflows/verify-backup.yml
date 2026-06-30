@@ -1,0 +1,31 @@
+name: Verify Memos Backup
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+      timezone: "Asia/Hong_Kong"
+  workflow_dispatch:
+    inputs:
+      backup_date:
+        description: "YYYYMMDD to verify (blank = yesterday)"
+        required: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies (rclone, jq)
+        run: sudo apt-get update && sudo apt-get install -y rclone jq
+
+      - name: Verify backup restore
+        env:
+          WEBDAV_URL: ${{ secrets.WEBDAV_URL }}
+          WEBDAV_USER: ${{ secrets.WEBDAV_USER }}
+          WEBDAV_PASS: ${{ secrets.WEBDAV_PASS }}
+          MEMOS_LIVE_URL: ${{ secrets.MEMOS_LIVE_URL }}
+          MEMOS_TOKEN: ${{ secrets.MEMOS_TOKEN }}
+          # Pin a date when run manually; empty on schedule -> script uses yesterday.
+          BACKUP_DATE: ${{ github.event.inputs.backup_date }}
+        run: bash verify-restore.sh
