@@ -73,7 +73,7 @@ docker run -d --name "$CNAME" -u "$(id -u):$(id -g)" \
 REST_URL="http://127.0.0.1:${VERIFY_PORT}"
 printf '==> Waiting for restored instance'
 ready=
-for i in $(seq 1 60); do
+for i in $(seq 1 180); do
   code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$REST_URL/api/v1/memos?pageSize=1" || echo 000)
   if [ "$code" = "200" ]; then ready=1; echo " ready"; break; fi
   printf '.'; sleep 1
